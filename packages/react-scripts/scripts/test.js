@@ -25,6 +25,7 @@ process.on('unhandledRejection', err => {
 // Ensure environment variables are read.
 require('../config/env');
 
+const inject = require('./utils/inject');
 const jest = require('jest');
 const argv = process.argv.slice(2);
 
@@ -41,11 +42,11 @@ const paths = require('../config/paths');
 argv.push(
   '--config',
   JSON.stringify(
-    createJestConfig(
+    inject('jest-config.js')(createJestConfig(
       relativePath => path.resolve(__dirname, '..', relativePath),
       path.resolve(paths.appSrc, '..'),
       false
-    )
+    ))
   )
 );
 // @remove-on-eject-end
